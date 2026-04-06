@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fake News Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <h1 class="title"> Fake News Detector</h1>
+    <p class="subtitle">AI-powered system · CNN + LSTM · real-time analysis</p>
+
+    <!-- MAIN CARD -->
+    <div class="card">
+
+        <form method="POST" id="news-form">
+
+            <textarea
+                name="news"
+                id="news-input"
+                placeholder="Paste your news article or headline here...">{{ text }}</textarea>
+
+            <div class="btn-group">
+                <button type="submit">→ Analyze</button>
+                <button type="button" id="clear-btn">✕ Clear</button>
+            </div>
+
+        </form>
+
+        <!-- WARNING -->
+        <div class="warning" id="warning">
+            ⚠ &nbsp; Please enter some news text before analyzing.
+        </div>
+
+     <!-- RESULT -->
+{% if result %}
+<div class="result 
+    {% if 'Real' in result %}real
+    {% elif 'Fake' in result %}fake
+    {% endif %}">
+
+    {{ result }}
+
+    {% if confidence is not none %}
+    <div class="confidence">
+        Confidence: {{ confidence }}%
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ confidence }}%;">
+            
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+        <div class="feature">
+            <h3>⚡ Fast Detection</h3>
+            <p>Instant AI predictions</p>
+        </div>
+        <div class="feature">
+            <h3>🧠 Smart AI</h3>
+            <p>CNN + LSTM model</p>
+        </div>
+        <div class="feature">
+            <h3>🌐 Real Data</h3>
+            <p>Trained on real datasets</p>
+        </div>
+    </div>
+
+    <p class="footer">© 2026 Irfhan · Powered by Deep Learning (CNN + LSTM) · All Rights Reserved</p>
+
+</div>
+
+<script>
+const textarea = document.getElementById("news-input");
+const form     = document.getElementById("news-form");
+const warning  = document.getElementById("warning");
+const clearBtn = document.getElementById("clear-btn");
+
+warning.style.display = "none";
+
+form.addEventListener("submit", function(e) {
+    if (!textarea.value.trim()) {
+        e.preventDefault();
+        warning.style.display = "flex";
+        textarea.focus();
+    }
+});
+
+textarea.addEventListener("input", function() {
+    if (textarea.value.trim()) {
+        warning.style.display = "none";
+        const result = document.querySelector(".result");
+        if (result) result.remove();
+    }
+});
+
+clearBtn.addEventListener("click", () => {
+    textarea.value = "";
+    warning.style.display = "none";
+    const result = document.querySelector(".result");
+    if (result) result.remove();
+    textarea.focus();
+});
+</script>
+
+</body>
+</html>
