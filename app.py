@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from keras.models import load_model
 from tensorflow.keras.preprocessing.text import tokenizer_from_json
 from preprocess import encode_texts
-impoer os
+import os
 
 app = Flask(__name__)
 app.secret_key = "secret123"
